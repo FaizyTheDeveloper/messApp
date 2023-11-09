@@ -5,6 +5,7 @@ import 'package:mess_app/api/api_system.dart';
 import 'package:mess_app/main.dart';
 import 'package:mess_app/models/message.dart';
 import 'package:mess_app/models/user_chat.dart';
+import 'package:mess_app/themes/light_theme.dart';
 import 'package:mess_app/widgets/message_card.dart';
 
 class ChatScreen extends StatefulWidget {
@@ -19,12 +20,11 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-  final List<Message> _list = [];
+  List<Message> _list = [];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.secondary,
         automaticallyImplyLeading: false,
@@ -33,70 +33,62 @@ class _ChatScreenState extends State<ChatScreen> {
           child: _appBar(),
         ),
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: StreamBuilder(
-                stream: APISystem.getAllMessages(),
-                builder: (context, snapshot) {
-                  switch (snapshot.connectionState) {
-                    //when data loading
-                    case ConnectionState.waiting:
-                    case ConnectionState.none:
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
-
-                    //when all data is loaded
-                    case ConnectionState.active:
-                    case ConnectionState.done:
-                      final data = snapshot.data?.docs;
-                      print('data ${jsonEncode(data![0].data())}');
-                      // list = data
-                      //         ?.map((e) => UserChat.fromJson(e.data()))
-                      //         .toList() ??
-                      //     [];
-
-                      _list.clear();
-
-                      _list.add(Message(
-                          msg: "hii",
-                          toId: "xyz",
-                          read: "",
-                          type: Type.text,
-                          sent: "12:10 AM",
-                          fromId: APISystem.user.uid));
-
-                      _list.add(Message(
-                          msg: "hello",
-                          toId: APISystem.user.uid,
-                          read: "",
-                          type: Type.text,
-                          sent: "11:00 PM",
-                          fromId: "xyz"));
-
-                      if (_list.isNotEmpty) {
-                        return ListView.builder(
-                            physics: const BouncingScrollPhysics(),
-                            itemCount: _list.length,
-                            itemBuilder: (context, index) {
-                              return MessageCard(
-                                message: _list[index],
-                              );
-                            });
-                      } else {
+      body: Container(
+        decoration: BoxDecoration(
+            image: DecorationImage(
+                image:
+                    Theme.of(context).colorScheme.brightness == Brightness.light
+                        ? const AssetImage('images/bglight.png')
+                        : const AssetImage('images/bgDark.jpg'),
+                fit: BoxFit.cover)),
+        child: Column(
+          children: [
+            Expanded(
+              child: StreamBuilder(
+                  stream: APISystem.getAllMessages(widget.user),
+                  builder: (context, snapshot) {
+                    switch (snapshot.connectionState) {
+                      //when data loading
+                      case ConnectionState.waiting:
+                      case ConnectionState.none:
                         return const Center(
-                          child: Text(
-                            'Say Hii 👋',
-                            style: TextStyle(fontSize: 18),
-                          ),
+                          child: CircularProgressIndicator(),
                         );
-                      }
-                  }
-                }),
-          ),
-          _chatInputs(),
-        ],
+
+                      //when all data is loaded
+                      case ConnectionState.active:
+                      case ConnectionState.done:
+                        final data = snapshot.data?.docs;
+                        // print('data ${jsonEncode(data![0].data())}');
+
+                        _list = data
+                                ?.map((e) => Message.fromJson(e.data()))
+                                .toList() ??
+                            [];
+
+                        if (_list.isNotEmpty) {
+                          return ListView.builder(
+                              physics: const BouncingScrollPhysics(),
+                              itemCount: _list.length,
+                              itemBuilder: (context, index) {
+                                return MessageCard(
+                                  message: _list[index],
+                                );
+                              });
+                        } else {
+                          return const Center(
+                            child: Text(
+                              'Say Hii 👋',
+                              style: TextStyle(fontSize: 18),
+                            ),
+                          );
+                        }
+                    }
+                  }),
+            ),
+            _chatInputs(),
+          ],
+        ),
       ),
     );
   }

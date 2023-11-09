@@ -34,7 +34,6 @@ class _MessageCardState extends State<MessageCard> {
             child: Text(widget.message.msg),
           ),
         ),
-        const Icon(Icons.done_all_rounded),
         Text(
           widget.message.sent,
           style: TextStyle(color: Theme.of(context).colorScheme.onSecondary),
@@ -52,7 +51,10 @@ class _MessageCardState extends State<MessageCard> {
           widget.message.read,
           style: TextStyle(color: Theme.of(context).colorScheme.onSecondary),
         ),
-        const Icon(Icons.done_all_rounded),
+        const Icon(
+          Icons.done_all_rounded,
+          color: Colors.blue,
+        ),
         Flexible(
           child: Container(
             padding: EdgeInsets.all(mq.width * .03),
