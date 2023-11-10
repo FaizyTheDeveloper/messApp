@@ -116,7 +116,6 @@ class _HomeScreenItemsState extends State<HomeScreenItems> {
                         ),
                 ),
               ),
-              const Divider(),
               Expanded(
                 child: StreamBuilder(
                     stream: APISystem.getAllUsers(),

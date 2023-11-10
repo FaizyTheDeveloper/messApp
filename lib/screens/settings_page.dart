@@ -66,7 +66,6 @@ class _SettingsPageState extends State<SettingsPage> {
                           ),
                         ),
                       ),
-                      divider,
                       ListTile(
                         onTap: () {
                           Navigator.push(
@@ -95,7 +94,10 @@ class _SettingsPageState extends State<SettingsPage> {
                                 radius: 30,
                                 backgroundColor:
                                     Theme.of(context).colorScheme.secondary,
-                                child: Image.file(File(widget.user.image)),
+                                child: Image.file(
+                                  File(widget.user.image),
+                                  fit: BoxFit.cover,
+                                ),
                               ),
                         title: Text(widget.user.name),
                         subtitle: Text(widget.user.about),
@@ -109,7 +111,6 @@ class _SettingsPageState extends State<SettingsPage> {
                       ListTile(
                         onTap: () async {
                           Dialogs.showProgressBar(context);
-
                           await APISystem.auth.signOut().then((value) async {
                             await GoogleSignIn().signOut().then((value) {
                               Navigator.pushReplacement(

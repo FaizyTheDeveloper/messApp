@@ -48,35 +48,33 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     mq = MediaQuery.of(context).size;
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: Theme.of(context).colorScheme.background,
-        body: Stack(
-          children: [
-            Positioned(
-              bottom: mq.height * 0.15,
-              left: mq.width * .05,
-              width: mq.width * .9,
-              height: mq.height * .7,
-              child: Center(
-                child: Image.asset(
-                  'images/icon.png',
-                  width: mq.width * 0.50,
-                ),
+    return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.background,
+      body: Stack(
+        children: [
+          Positioned(
+            bottom: mq.height * 0.15,
+            left: mq.width * .05,
+            width: mq.width * .9,
+            height: mq.height * .7,
+            child: Center(
+              child: Image.asset(
+                'images/icon.png',
+                width: mq.width * 0.50,
               ),
             ),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Padding(
-                padding: EdgeInsets.only(bottom: mq.height * 0.20),
-                child: const Text(
-                  'MADE BY FAIZAL WITH ❤️',
-                  style: TextStyle(fontSize: 16),
-                ),
+          ),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Padding(
+              padding: EdgeInsets.only(bottom: mq.height * 0.20),
+              child: const Text(
+                'MADE BY FAIZAL WITH ❤️',
+                style: TextStyle(fontSize: 16),
               ),
-            )
-          ],
-        ),
+            ),
+          )
+        ],
       ),
     );
   }
