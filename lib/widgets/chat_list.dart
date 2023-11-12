@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mess_app/api/api_system.dart';
@@ -42,26 +45,23 @@ class _ChatListState extends State<ChatList> {
                               user: widget.user,
                             )));
               },
-              leading: widget.user.image.isEmpty
-                  ? CircleAvatar(
-                      backgroundColor: Theme.of(context).colorScheme.secondary,
-                      radius: 22,
-                      child: Center(
-                        child: Text(
-                          widget.user.name[0],
-                          style:
-                              TextStyle(fontSize: 25, color: Colors.grey[800]),
-                        ),
-                      ),
-                    )
-                  : CircleAvatar(
-                      radius: 22,
-                      backgroundColor: Theme.of(context).colorScheme.secondary,
-                      child: Icon(
-                        Icons.person,
-                        color: Theme.of(context).colorScheme.onSecondary,
-                      ),
-                    ),
+              leading: Padding(
+                padding: const EdgeInsets.all(3.0),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(mq.height * .03),
+                  child: CachedNetworkImage(
+                    width: 50,
+                    height: 50,
+                    imageUrl: widget.user.image,
+                    fit: BoxFit.cover,
+                    errorWidget: (context, url, error) {
+                      return const CircleAvatar(
+                        child: Icon(Icons.person),
+                      );
+                    },
+                  ),
+                ),
+              ),
               //user name
               title: Text(widget.user.name),
               //last message

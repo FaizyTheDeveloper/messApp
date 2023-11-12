@@ -53,7 +53,7 @@ class APISystem {
 
   //to create new user
   static Future<void> userCreate() async {
-    final time = DateTime.now().microsecondsSinceEpoch.toString();
+    final time = DateTime.now().millisecondsSinceEpoch.toString();
     final chatUser = UserChat(
       image: user.photoURL.toString(),
       name: user.displayName.toString(),
@@ -102,6 +102,21 @@ class APISystem {
 
     await firestore.collection('users').doc(user.uid).update({
       'image': me.image,
+    });
+  }
+
+  static Stream<QuerySnapshot<Map<String, dynamic>>> getUserInfo(
+      UserChat chatUser) {
+    return firestore
+        .collection('users')
+        .where('id', isEqualTo: chatUser.id)
+        .snapshots();
+  }
+
+  static Future<void> updateActiveStatus(bool isOnline) async {
+    firestore.collection('users').doc(user.uid).update({
+      'is_online': isOnline,
+      'last_active': DateTime.now().millisecondsSinceEpoch.toString()
     });
   }
 

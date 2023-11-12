@@ -26,25 +26,51 @@ class MyDate {
         return 'Jan';
       case 2:
         return 'Feb';
-      case 2:
+      case 3:
+        return 'Mar';
+      case 4:
         return 'Apr';
-      case 2:
+      case 5:
         return 'May';
-      case 2:
+      case 6:
         return 'Jun';
-      case 2:
+      case 7:
         return 'Jul';
-      case 2:
+      case 8:
         return 'Aug';
-      case 2:
+      case 9:
         return 'Sep';
-      case 2:
+      case 10:
         return 'Oct';
-      case 2:
+      case 11:
         return 'Nov';
-      case 2:
+      case 12:
         return 'Dec';
     }
     return 'N/A';
+  }
+
+  static String getLastActiveTime(
+      {required BuildContext context, required String lastActive}) {
+    final int i = int.tryParse(lastActive) ?? -1;
+
+    if (i == -1) return 'Last seen not available';
+
+    DateTime time = DateTime.fromMillisecondsSinceEpoch(i);
+    DateTime now = DateTime.now();
+
+    String formattedTime = TimeOfDay.fromDateTime(time).format(context);
+    if (time.day == now.day &&
+        time.month == now.month &&
+        time.year == now.year) {
+      return 'Last seen today at $formattedTime';
+    }
+
+    if ((now.difference(time).inHours / 24).round() == 1) {
+      return 'Last seen yesterday at $formattedTime';
+    }
+
+    String month = _getMonth(time);
+    return 'Last seen on ${time.day} $month on $formattedTime';
   }
 }
