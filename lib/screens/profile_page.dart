@@ -109,7 +109,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         Icons.copy,
                         size: 15,
                       ),
-                    )
+                    ),
                   ],
                 ),
                 SizedBox(
@@ -347,6 +347,23 @@ class _ProfilePageState extends State<ProfilePage> {
                     child: ListTile(
                       leading: const Icon(Icons.mail),
                       title: Text(widget.user.email),
+                      trailing: IconButton(
+                        onPressed: () {
+                          Clipboard.setData(
+                              ClipboardData(text: widget.user.email));
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              backgroundColor:
+                                  Theme.of(context).colorScheme.onBackground,
+                              behavior: SnackBarBehavior.floating,
+                              margin: const EdgeInsets.symmetric(
+                                  horizontal: 100, vertical: 50),
+                              content: const Text('email copied')));
+                        },
+                        icon: const Icon(
+                          Icons.copy,
+                          size: 21,
+                        ),
+                      ),
                     ),
                   ),
                 )

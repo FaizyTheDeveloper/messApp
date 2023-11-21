@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/services.dart';
 import 'package:mess_app/api/api_system.dart';
 import 'package:mess_app/main.dart';
@@ -27,7 +29,7 @@ class _SplashScreenState extends State<SplashScreen> {
           systemNavigationBarColor: Colors.transparent));
 
       if (APISystem.auth.currentUser != null) {
-        print('User : ${APISystem.auth.currentUser}');
+        log('User : ${APISystem.auth.currentUser}');
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(

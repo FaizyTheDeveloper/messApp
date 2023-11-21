@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -42,7 +43,7 @@ class APISystem {
     await firestore.collection('users').doc(user.uid).get().then((user) {
       if (user.exists) {
         me = UserChat.fromJson(user.data()!);
-        print('My data : ${user.data()}');
+        log('My data : ${user.data()}');
       } else {
         userCreate().then(
           (user) => getSelfInfo(),
@@ -88,14 +89,14 @@ class APISystem {
   static Future<void> updateProfileImage(File file) async {
     final extension = file.path.split('.').last;
 
-    print('extension : $extension');
+    log('extension : $extension');
 
     final ref = storage.ref().child('profilepictures/${user.uid}.$extension');
 
     await ref
         .putFile(file, SettableMetadata(contentType: 'image/$extension'))
         .then((p0) {
-      print('data transmitted : ${p0.bytesTransferred / 1000} kb');
+      log('data transmitted : ${p0.bytesTransferred / 1000} kb');
     });
 
     me.image = await ref.getDownloadURL();
@@ -177,7 +178,7 @@ class APISystem {
   static Future<void> sentImage(UserChat chatUser, File file) async {
     final extension = file.path.split('.').last;
 
-    print('extension : $extension');
+    log('extension : $extension');
 
     final ref = storage.ref().child(
         'images/${getConversationID(chatUser.id)}/${DateTime.now().millisecondsSinceEpoch}.$extension');
@@ -185,7 +186,7 @@ class APISystem {
     await ref
         .putFile(file, SettableMetadata(contentType: 'image/$extension'))
         .then((p0) {
-      print('data transmitted : ${p0.bytesTransferred / 1000} kb');
+      log('data transmitted : ${p0.bytesTransferred / 1000} kb');
     });
 
     final imageUrl = await ref.getDownloadURL();

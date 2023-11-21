@@ -1,4 +1,7 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:mess_app/api/api_system.dart';
 import 'package:mess_app/main.dart';
 import 'package:mess_app/models/user_chat.dart';
@@ -16,6 +19,22 @@ class _HomeScreenItemsState extends State<HomeScreenItems> {
   void initState() {
     super.initState();
     APISystem.getSelfInfo();
+    SystemChannels.lifecycle.setMessageHandler((message) {
+      log('message : $message');
+
+      if (message.toString().contains('resume')) {
+        APISystem.updateActiveStatus(true);
+      }
+
+      if (message.toString().contains('pause')) {
+        APISystem.updateActiveStatus(false);
+      }
+      if (message.toString().contains('inactive')) {
+        APISystem.updateActiveStatus(false);
+      }
+
+      return Future.value(message);
+    });
   }
 
   final _searchController = TextEditingController();
@@ -43,6 +62,7 @@ class _HomeScreenItemsState extends State<HomeScreenItems> {
             slivers: [
               SliverAppBar(
                 floating: false,
+                automaticallyImplyLeading: false,
                 backgroundColor: Theme.of(context).colorScheme.background,
                 flexibleSpace: FlexibleSpaceBar(
                     titlePadding: const EdgeInsets.all(20),
