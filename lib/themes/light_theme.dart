@@ -11,8 +11,8 @@ ThemeData lightTheme = ThemeData(
     ),
   ),
   colorScheme: ColorScheme.light(
-      background: Colors.deepPurple[100]!,
+      background: Colors.white,
       primary: Colors.black,
-      secondary: Colors.deepPurple[300]!,
+      secondary: Colors.grey[300]!,
       onSecondary: Colors.grey[500]!),
 );
