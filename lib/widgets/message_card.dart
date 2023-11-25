@@ -28,6 +28,7 @@ class _MessageCardState extends State<MessageCard> {
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.end,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Flexible(
           child: Padding(
@@ -65,7 +66,7 @@ class _MessageCardState extends State<MessageCard> {
           MyDate.getFormatedTime(context: context, time: widget.message.sent),
           style: TextStyle(
               color: Theme.of(context).colorScheme.onSecondary,
-              fontSize: mq.height * .013),
+              fontSize: mq.height * .011),
         )
       ],
     );
@@ -82,56 +83,76 @@ class _MessageCardState extends State<MessageCard> {
               color: Theme.of(context).colorScheme.onSecondary,
               fontSize: mq.height * .013),
         ),
-        if (widget.message.read.isNotEmpty)
-          Icon(
-            Icons.done_all_rounded,
-            color: Colors.blue,
-            size: mq.width * 0.05,
-          ),
         Flexible(
-          child: Padding(
-            padding: EdgeInsets.only(top: mq.height * 0.01),
-            child: Container(
-                padding: EdgeInsets.all(widget.message.type == Type.image
-                    ? mq.width * .01
-                    : mq.width * .028),
-                margin: EdgeInsets.symmetric(
-                  horizontal: mq.width * .02,
-                ),
-                decoration: BoxDecoration(
-                    borderRadius: const BorderRadius.all(Radius.circular(10)),
-                    color: Theme.of(context).colorScheme.secondary),
-                child: widget.message.type == Type.text
-                    ? Text(widget.message.msg)
-                    : ClipRRect(
-                        borderRadius: BorderRadius.circular(mq.height * .01),
-                        child: CachedNetworkImage(
-                          placeholder: (context, url) {
-                            return Container(
+          child: Stack(
+            children: [
+              Padding(
+                padding: EdgeInsets.only(top: mq.height * 0.01),
+                child: Container(
+                    padding: EdgeInsets.all(widget.message.type == Type.image
+                        ? mq.width * .01
+                        : mq.width * .028),
+                    margin: EdgeInsets.symmetric(
+                      horizontal: mq.width * .03,
+                      vertical: mq.width * .01,
+                    ),
+                    decoration: BoxDecoration(
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(10)),
+                        color: Theme.of(context).colorScheme.secondary),
+                    child: widget.message.type == Type.text
+                        ? Text(widget.message.msg)
+                        : ClipRRect(
+                            borderRadius:
+                                BorderRadius.circular(mq.height * .01),
+                            child: CachedNetworkImage(
+                              placeholder: (context, url) {
+                                return Container(
+                                  width: mq.width * .50,
+                                  height: mq.height * .30,
+                                  decoration: BoxDecoration(
+                                    borderRadius:
+                                        BorderRadius.circular(mq.height * .01),
+                                  ),
+                                  child: const Center(
+                                      child: CircularProgressIndicator(
+                                    strokeWidth: 1.5,
+                                  )),
+                                );
+                              },
                               width: mq.width * .50,
                               height: mq.height * .30,
-                              decoration: BoxDecoration(
-                                borderRadius:
-                                    BorderRadius.circular(mq.height * .01),
-                              ),
-                              child: const Center(
-                                  child: CircularProgressIndicator(
-                                strokeWidth: 1.5,
-                              )),
-                            );
-                          },
-                          width: mq.width * .50,
-                          height: mq.height * .30,
-                          imageUrl: widget.message.msg,
-                          fit: BoxFit.cover,
-                          errorWidget: (context, url, error) {
-                            return const Icon(
-                              Icons.image,
-                              size: 70,
-                            );
-                          },
-                        ),
-                      )),
+                              imageUrl: widget.message.msg,
+                              fit: BoxFit.cover,
+                              errorWidget: (context, url, error) {
+                                return const Icon(
+                                  Icons.image,
+                                  size: 70,
+                                );
+                              },
+                            ),
+                          )),
+              ),
+              widget.message.read.isNotEmpty
+                  ? Positioned(
+                      bottom: 5,
+                      right: 14,
+                      child: Icon(
+                        Icons.done_all_rounded,
+                        color: Colors.blue,
+                        size: mq.width * 0.034,
+                      ),
+                    )
+                  : Positioned(
+                      bottom: 5,
+                      right: 14,
+                      child: Icon(
+                        Icons.done_rounded,
+                        color: Colors.grey[800],
+                        size: mq.width * 0.034,
+                      ),
+                    )
+            ],
           ),
         ),
       ],

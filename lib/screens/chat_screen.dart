@@ -10,6 +10,7 @@ import 'package:mess_app/helper/my_date.dart';
 import 'package:mess_app/main.dart';
 import 'package:mess_app/models/message.dart';
 import 'package:mess_app/models/user_chat.dart';
+import 'package:mess_app/screens/user_profile_page.dart';
 import 'package:mess_app/themes/light_theme.dart';
 import 'package:mess_app/widgets/message_card.dart';
 
@@ -171,7 +172,14 @@ class _ChatScreenState extends State<ChatScreen> {
 
   Widget? _appBar() {
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (_) => UserProfilePage(
+                      user: widget.user,
+                    )));
+      },
       child: StreamBuilder(
         stream: APISystem.getUserInfo(widget.user),
         builder: (context, snapshot) {

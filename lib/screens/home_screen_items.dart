@@ -22,16 +22,19 @@ class _HomeScreenItemsState extends State<HomeScreenItems> {
     SystemChannels.lifecycle.setMessageHandler((message) {
       log('message : $message');
 
-      if (message.toString().contains('resume')) {
-        APISystem.updateActiveStatus(true);
+      if (APISystem.auth.currentUser != null) {
+        if (message.toString().contains('resume')) {
+          APISystem.updateActiveStatus(true);
+        }
+
+        if (message.toString().contains('pause')) {
+          APISystem.updateActiveStatus(false);
+        }
       }
 
-      if (message.toString().contains('pause')) {
-        APISystem.updateActiveStatus(false);
-      }
-      if (message.toString().contains('inactive')) {
-        APISystem.updateActiveStatus(false);
-      }
+      // if (message.toString().contains('inactive')) {
+      //   APISystem.updateActiveStatus(false);
+      // }
 
       return Future.value(message);
     });

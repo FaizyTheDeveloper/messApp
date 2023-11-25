@@ -9,6 +9,7 @@ import 'package:mess_app/main.dart';
 import 'package:mess_app/models/message.dart';
 import 'package:mess_app/models/user_chat.dart';
 import 'package:mess_app/screens/chat_screen.dart';
+import 'package:mess_app/widgets/dialogs/profile_dialogue.dart';
 
 class ChatList extends StatefulWidget {
   final UserChat user;
@@ -47,18 +48,27 @@ class _ChatListState extends State<ChatList> {
               },
               leading: Padding(
                 padding: const EdgeInsets.all(3.0),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(mq.height * .03),
-                  child: CachedNetworkImage(
-                    width: 50,
-                    height: 50,
-                    imageUrl: widget.user.image,
-                    fit: BoxFit.cover,
-                    errorWidget: (context, url, error) {
-                      return const CircleAvatar(
-                        child: Icon(Icons.person),
-                      );
-                    },
+                child: InkWell(
+                  onTap: () {
+                    showDialog(
+                        context: context,
+                        builder: (_) {
+                          return ProfileDialog(user: widget.user);
+                        });
+                  },
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(mq.height * .03),
+                    child: CachedNetworkImage(
+                      width: 50,
+                      height: 50,
+                      imageUrl: widget.user.image,
+                      fit: BoxFit.cover,
+                      errorWidget: (context, url, error) {
+                        return const CircleAvatar(
+                          child: Icon(Icons.person),
+                        );
+                      },
+                    ),
                   ),
                 ),
               ),
